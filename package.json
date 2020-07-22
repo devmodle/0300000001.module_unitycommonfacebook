@@ -7,9 +7,9 @@
 		"email": "are2341@nate.com"
 	},
 	"dependencies": {
-		"00.unity.module.common.define": "v1.0.0",
-		"00.unity.module.common.access": "v1.0.0",
-		"00.unity.module.common.func": "v1.0.0",
-		"00.unity.module.common.utility": "v1.0.0"
+		"00.unity.module.common.define": "https://gitlab.com/9tap.repository/unitymodule_common_define_client.git#v1.0.0",
+		"00.unity.module.common.access": "https://gitlab.com/9tap.repository/unitymodule_common_access_client.git#v1.0.0",
+		"00.unity.module.common.func": "https://gitlab.com/9tap.repository/unitymodule_common_func_client.git#v1.0.0",
+		"00.unity.module.common.utility": "https://gitlab.com/9tap.repository/unitymodule_common_utility_client.git#v1.0.0"
 	}
 }
