@@ -32,7 +32,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 	#region 함수
 	//! 초기화
 	public virtual void Init(System.Action<CFacebookManager, bool> a_oCallback) {
-		CFunc.ShowLog("CFacebookManager.Init", KCDefine.LOG_COLOR_PLUGIN);
+		CFunc.ShowLog("CFacebookManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
 		if(this.IsInit || !CAccess.IsMobilePlatform()) {
 			a_oCallback?.Invoke(this, this.IsInit);
@@ -44,8 +44,8 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 
 	//! 초기화 되었을 경우
 	public void OnInit() {
-		CScheduleManager.Instance.AddCallback(KCDefine.KEY_FACEBOOK_M_INIT_CALLBACK, () => {
-			CFunc.ShowLog("CFacebookManager.OnInit: {0}", KCDefine.LOG_COLOR_PLUGIN, this.IsInit);
+		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_FACEBOOK_M_INIT_CALLBACK, () => {
+			CFunc.ShowLog("CFacebookManager.OnInit: {0}", KCDefine.B_LOG_COLOR_PLUGIN, this.IsInit);
 
 #if FACEBOOK_ANALYTICS_ENABLE
 #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
@@ -64,8 +64,8 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 
 	//! 로그인 되었을 경우
 	public void OnLogin(ILoginResult a_oResult) {
-		CScheduleManager.Instance.AddCallback(KCDefine.KEY_FACEBOOK_M_LOGIN_CALLBACK, () => {
-			CFunc.ShowLog("CFacebookManager.OnLogin: {0}, {1}", KCDefine.LOG_COLOR_PLUGIN, this.IsLogin, a_oResult);
+		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGIN_CALLBACK, () => {
+			CFunc.ShowLog("CFacebookManager.OnLogin: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, this.IsLogin, a_oResult);
 			CActivityIndicatorManager.Instance.StopActivityIndicator();
 
 			m_oLoginCallback?.Invoke(this, this.IsLogin);
@@ -75,11 +75,11 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 
 	//! 뷰 상태가 변경 되었을 경우
 	public void OnChangeViewState(bool a_bIsShow) {
-		string oKey = a_bIsShow ? KCDefine.KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK
-			: KCDefine.KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
+		string oKey = a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK
+			: KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
 
 		CScheduleManager.Instance.AddCallback(oKey, () => {
-			CFunc.ShowLog("CFacebookManager.OnChangeViewState: {0}", KCDefine.LOG_COLOR_PLUGIN, a_bIsShow);
+			CFunc.ShowLog("CFacebookManager.OnChangeViewState: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_bIsShow);
 
 			if(a_bIsShow) {
 				CActivityIndicatorManager.Instance.StopActivityIndicator();
@@ -94,7 +94,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 
 	//! 로그인을 처리한다
 	public void Login(List<string> a_oPermissionList, System.Action<CFacebookManager, bool> a_oCallback) {
-		CFunc.ShowLog("CFacebookManager.Login: {0}", KCDefine.LOG_COLOR_PLUGIN, a_oPermissionList);
+		CFunc.ShowLog("CFacebookManager.Login: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oPermissionList);
 
 		if(!this.IsInit || this.IsLogin) {
 			a_oCallback?.Invoke(this, this.IsLogin);
@@ -106,7 +106,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 
 	//! 로그아웃을 처리한다
 	public void Logout(System.Action<CFacebookManager> a_oLogoutCallback) {
-		CFunc.ShowLog("CFacebookManager.Logout", KCDefine.LOG_COLOR_PLUGIN);
+		CFunc.ShowLog("CFacebookManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
 
 		if(this.IsInit) {
 			FB.LogOut();
@@ -128,28 +128,28 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 		CAccess.Assert(a_oParameter.ExIsValid());
 
 		this.SendLog(a_oName, new Dictionary<string, object>() {
-			[a_oParameter] = a_oDataList.ExToString(KCDefine.TOKEN_FACEBOOK_ANALYTICS_LOG_DATA)
+			[a_oParameter] = a_oDataList.ExToString(KCDefine.U_TOKEN_FACEBOOK_ANALYTICS_LOG_DATA)
 		}, a_oValue);
 	}
 
 	//! 로그를 전송한다
 	public void SendLog(string a_oName, Dictionary<string, object> a_oDataList, float? a_oValue = null) {
 		CAccess.Assert(a_oName.ExIsValid());
-		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", KCDefine.LOG_COLOR_PLUGIN, a_oName, a_oDataList);
+		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oName, a_oDataList);
 
 #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 		if(this.IsInit) {
 			var oDataList = a_oDataList ?? new Dictionary<string, object>();
 
 #if MESSAGE_PACK_ENABLE
-			oDataList.ExAddValue(KCDefine.LOG_KEY_DEVICE_ID, CAppInfoStorage.Instance.AppInfo.DeviceID);
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_DEVICE_ID, CAppInfoStorage.Instance.AppInfo.DeviceID);
 
 #if AUTO_LOG_PARAMETER_ENABLE
-			oDataList.ExAddValue(KCDefine.LOG_KEY_PLATFORM, CAppInfoStorage.Instance.PlatformName);
-			oDataList.ExAddValue(KCDefine.LOG_KEY_USER_TYPE, CUserInfoStorage.Instance.UserInfo.UserType.ToString());
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_PLATFORM, CAppInfoStorage.Instance.PlatformName);
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_USER_TYPE, CUserInfoStorage.Instance.UserInfo.UserType.ToString());
 			
-			oDataList.ExAddValue(KCDefine.LOG_KEY_LOG_TIME, System.DateTime.UtcNow.ExToLongString());
-			oDataList.ExAddValue(KCDefine.LOG_KEY_INSTALL_TIME, CAppInfoStorage.Instance.AppInfo.m_stUTCInstallTime.ExToLongString());
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_LOG_TIME, System.DateTime.UtcNow.ExToLongString());
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_INSTALL_TIME, CAppInfoStorage.Instance.AppInfo.m_stUTCInstallTime.ExToLongString());
 #endif			// #if AUTO_LOG_PARAMETER_ENABLE
 #endif			// #if MESSAGE_PACK_ENABLE
 
