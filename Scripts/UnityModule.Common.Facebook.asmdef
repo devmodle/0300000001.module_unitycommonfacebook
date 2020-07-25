@@ -1,10 +1,7 @@
 {
     "name": "UnityModule.Common.Facebook",
     "references": [
-        "UnityModule.Common.Define",
-        "UnityModule.Common.Access",
-        "UnityModule.Common.Func",
-        "UnityModule.Common.Utility"
+        "UnityModule.Common.Define"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
