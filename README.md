@@ -1,3 +1,8 @@
-# UnityModule_Common_Facebook_Client
-
-UnityModule - Common Facebook 클라이언트 프로젝트
+# 유니티 페이스 북 공용 모듈
+1. **필수 전처리기 심볼**
+	- *FACEBOOK_ENABLE*
+2. **기타 전처리기 심볼**
+	- *FACEBOOK_ANALYTICS_ENABLE*
+	- *ANALYTICS_TEST_ENABLE*
+	- *AUTO_LOG_PARAMETER_ENABLE*
+	- *MESSAGE_PACK_ENABLE*

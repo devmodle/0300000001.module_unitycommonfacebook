@@ -141,7 +141,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 		if(this.IsInit) {
 			var oDataList = a_oDataList ?? new Dictionary<string, object>();
 
-#if MESSAGE_PACK_ENABLE
+#if MSG_PACK_ENABLE
 			oDataList.ExAddValue(KCDefine.U_LOG_KEY_DEVICE_ID, CAppInfoStorage.Instance.AppInfo.DeviceID);
 
 #if AUTO_LOG_PARAMETER_ENABLE
@@ -149,9 +149,9 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 			oDataList.ExAddValue(KCDefine.U_LOG_KEY_USER_TYPE, CUserInfoStorage.Instance.UserInfo.UserType.ToString());
 			
 			oDataList.ExAddValue(KCDefine.U_LOG_KEY_LOG_TIME, System.DateTime.UtcNow.ExToLongString());
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_INSTALL_TIME, CAppInfoStorage.Instance.AppInfo.m_stUTCInstallTime.ExToLongString());
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_INSTALL_TIME, CAppInfoStorage.Instance.AppInfo.UTCInstallTime.ExToLongString());
 #endif			// #if AUTO_LOG_PARAMETER_ENABLE
-#endif			// #if MESSAGE_PACK_ENABLE
+#endif			// #if MSG_PACK_ENABLE
 
 			FB.LogAppEvent(a_oName, a_oValue, oDataList);
 		}
