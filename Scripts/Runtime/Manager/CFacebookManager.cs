@@ -124,11 +124,11 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 
 	//! 로그를 전송한다
-	public void SendLog(string a_oName, string a_oParameter, List<string> a_oDataList, float? a_oValue = null) {
-		CAccess.Assert(a_oParameter.ExIsValid());
+	public void SendLog(string a_oName, string a_oParam, List<string> a_oDataList, float? a_oValue = null) {
+		CAccess.Assert(a_oParam.ExIsValid());
 
 		this.SendLog(a_oName, new Dictionary<string, object>() {
-			[a_oParameter] = a_oDataList.ExToString(KCDefine.U_TOKEN_FACEBOOK_ANALYTICS_LOG_DATA)
+			[a_oParam] = a_oDataList.ExToString(KCDefine.U_TOKEN_FACEBOOK_ANALYTICS_LOG_DATA)
 		}, a_oValue);
 	}
 
@@ -144,13 +144,13 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 #if MSG_PACK_ENABLE
 			oDataList.ExAddValue(KCDefine.U_LOG_KEY_DEVICE_ID, CAppInfoStorage.Instance.AppInfo.DeviceID);
 
-#if AUTO_LOG_PARAMETER_ENABLE
+#if AUTO_LOG_PARAM_ENABLE
 			oDataList.ExAddValue(KCDefine.U_LOG_KEY_PLATFORM, CAppInfoStorage.Instance.PlatformName);
 			oDataList.ExAddValue(KCDefine.U_LOG_KEY_USER_TYPE, CUserInfoStorage.Instance.UserInfo.UserType.ToString());
 			
 			oDataList.ExAddValue(KCDefine.U_LOG_KEY_LOG_TIME, System.DateTime.UtcNow.ExToLongString());
 			oDataList.ExAddValue(KCDefine.U_LOG_KEY_INSTALL_TIME, CAppInfoStorage.Instance.AppInfo.UTCInstallTime.ExToLongString());
-#endif			// #if AUTO_LOG_PARAMETER_ENABLE
+#endif			// #if AUTO_LOG_PARAM_ENABLE
 #endif			// #if MSG_PACK_ENABLE
 
 			FB.LogAppEvent(a_oName, a_oValue, oDataList);
