@@ -6,7 +6,7 @@ using UnityEngine;
 using Facebook.Unity;
 
 //! 페이스 북 관리자
-public class CFacebookManager : CSingleton<CFacebookManager> {
+public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	#region 변수
 	private System.Action<CFacebookManager, bool> m_oInitCallback = null;
 	private System.Action<CFacebookManager, bool> m_oLoginCallback = null;
@@ -115,49 +115,5 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 		a_oLogoutCallback?.Invoke(this);
 	}
 	#endregion			// 함수
-
-	#region 조건부 함수
-#if FACEBOOK_ANALYTICS_ENABLE
-	//! 로그를 전송한다
-	public void SendLog(string a_oName, float? a_oValue = null) {
-		this.SendLog(a_oName, null, a_oValue);
-	}
-
-	//! 로그를 전송한다
-	public void SendLog(string a_oName, string a_oParam, List<string> a_oDataList, float? a_oValue = null) {
-		CAccess.Assert(a_oParam.ExIsValid());
-
-		this.SendLog(a_oName, new Dictionary<string, object>() {
-			[a_oParam] = a_oDataList.ExToString(KCDefine.U_TOKEN_FACEBOOK_ANALYTICS_LOG_DATA)
-		}, a_oValue);
-	}
-
-	//! 로그를 전송한다
-	public void SendLog(string a_oName, Dictionary<string, object> a_oDataList, float? a_oValue = null) {
-		CAccess.Assert(a_oName.ExIsValid());
-		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oName, a_oDataList);
-
-#if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
-		if(this.IsInit) {
-			var oDataList = a_oDataList ?? new Dictionary<string, object>();
-
-#if MSG_PACK_ENABLE
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_DEVICE_ID, CAppInfoStorage.Instance.AppInfo.DeviceID);
-
-#if AUTO_LOG_PARAM_ENABLE
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_PLATFORM, CAppInfoStorage.Instance.PlatformName);
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_USER_TYPE, CUserInfoStorage.Instance.UserInfo.UserType.ToString());
-			
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_LOG_TIME, System.DateTime.UtcNow.ExToLongString());
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_INSTALL_TIME, CAppInfoStorage.Instance.AppInfo.UTCInstallTime.ExToLongString());
-#endif			// #if AUTO_LOG_PARAM_ENABLE
-#endif			// #if MSG_PACK_ENABLE
-
-			FB.LogAppEvent(a_oName, a_oValue, oDataList);
-		}
-#endif			// #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
-	}
-#endif			// #if FACEBOOK_ANALYTICS_ENABLE
-	#endregion			// 조건부 함수
 }
 #endif			// #if FACEBOOK_ENABLE
