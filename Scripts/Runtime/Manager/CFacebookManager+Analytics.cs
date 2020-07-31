@@ -18,7 +18,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		CAccess.Assert(a_oParam.ExIsValid());
 
 		this.SendLog(a_oName, new Dictionary<string, object>() {
-			[a_oParam] = a_oDataList.ExToString(KCDefine.U_TOKEN_FACEBOOK_ANALYTICS_LOG_DATA)
+			[a_oParam] = a_oDataList.ExToString(KCDefine.B_TOKEN_CSV_STRING)
 		}, a_oValue);
 	}
 
