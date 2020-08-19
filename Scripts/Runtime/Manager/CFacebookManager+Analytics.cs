@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if FACEBOOK_ENABLE && FACEBOOK_ANALYTICS_ENABLE
+#if FACEBOOK_MODULE_ENABLE && FACEBOOK_ANALYTICS_ENABLE
 using Facebook.Unity;
 
 //! 페이스 북 관리자 - 분석
@@ -49,4 +49,4 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 	#endregion			// 함수	
 }
-#endif			// #if FACEBOOK_ENABLE && FACEBOOK_ANALYTICS_ENABLE
+#endif			// #if FACEBOOK_MODULE_ENABLE && FACEBOOK_ANALYTICS_ENABLE

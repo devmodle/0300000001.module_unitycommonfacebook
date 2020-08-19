@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if FACEBOOK_ENABLE
+#if FACEBOOK_MODULE_ENABLE
 using Facebook.Unity;
 
 //! 페이스 북 관리자
@@ -116,4 +116,4 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 	#endregion			// 함수
 }
-#endif			// #if FACEBOOK_ENABLE
+#endif			// #if FACEBOOK_MODULE_ENABLE
