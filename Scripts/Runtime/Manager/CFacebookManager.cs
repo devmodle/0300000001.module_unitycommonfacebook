@@ -19,6 +19,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 
 	public bool IsLogin {
 		get {
+			// 초기화 되었을 경우
 			if(this.IsInit) {
 				var oToken = Facebook.Unity.AccessToken.CurrentAccessToken;
 				return oToken != null && oToken.ExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now).ExIsGreate(0.0f);
@@ -34,6 +35,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public virtual void Init(System.Action<CFacebookManager, bool> a_oCallback) {
 		CFunc.ShowLog("CFacebookManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
+		// 초기화가 필요 없을 경우
 		if(this.IsInit || !CAccess.IsMobilePlatform()) {
 			a_oCallback?.Invoke(this, this.IsInit);
 		} else {
@@ -81,6 +83,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		CScheduleManager.Instance.AddCallback(oKey, () => {
 			CFunc.ShowLog("CFacebookManager.OnChangeViewState: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_bIsShow);
 
+			// 출력 모드 일 경우
 			if(a_bIsShow) {
 				CActivityIndicatorManager.Instance.StopActivityIndicator();
 
@@ -96,6 +99,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public void Login(List<string> a_oPermissionList, System.Action<CFacebookManager, bool> a_oCallback) {
 		CFunc.ShowLog("CFacebookManager.Login: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oPermissionList);
 
+		// 로그인이 필요 없을 경우
 		if(!this.IsInit || this.IsLogin) {
 			a_oCallback?.Invoke(this, this.IsLogin);
 		} else {
@@ -108,6 +112,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public void Logout(System.Action<CFacebookManager> a_oLogoutCallback) {
 		CFunc.ShowLog("CFacebookManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
 
+		// 초기화 되었을 경우
 		if(this.IsInit) {
 			FB.LogOut();
 		}
