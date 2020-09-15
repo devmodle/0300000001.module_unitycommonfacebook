@@ -19,8 +19,6 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 
 	//! 로그를 전송한다
 	public void SendLog(string a_oName, string a_oParam, List<string> a_oDataList, float? a_oValue = null) {
-		CAccess.Assert(a_oParam.ExIsValid());
-
 		this.SendLog(a_oName, new Dictionary<string, object>() {
 			[a_oParam] = a_oDataList.ExToString(KCDefine.B_TOKEN_CSV_STRING)
 		}, a_oValue);
@@ -28,7 +26,6 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 
 	//! 로그를 전송한다
 	public void SendLog(string a_oName, Dictionary<string, object> a_oDataList, float? a_oValue = null) {
-		CAccess.Assert(a_oName.ExIsValid());
 		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oName, a_oDataList);
 
 #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
@@ -58,7 +55,6 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 #if PURCHASE_MODULE_ENABLE
 	//! 결제 로그를 전송한다
 	public void SendPurchaseLog(Product a_oProduct, Dictionary<string, object> a_oDataList) {
-		CAccess.Assert(a_oProduct != null);
 		CFunc.ShowLog("CFacebookManager.SendPurchaseLog: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oProduct);
 
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
