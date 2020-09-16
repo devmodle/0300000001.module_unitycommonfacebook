@@ -5,7 +5,8 @@
         "UnityModule.Common.Access",
         "UnityModule.Common.Extension",
         "UnityModule.Common.Func",
-        "UnityModule.Common.Utility"
+        "UnityModule.Common.Utility",
+        "UnityEngine.Purchasing"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
