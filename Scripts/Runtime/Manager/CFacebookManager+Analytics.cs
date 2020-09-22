@@ -63,7 +63,8 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 		// 초기화 되었을 경우
 		if(this.IsInit) {
-			FB.LogPurchase(a_oProduct.metadata.localizedPrice, a_oProduct.metadata.isoCurrencyCode, a_oDataList);
+			FB.LogPurchase(a_oProduct.metadata.localizedPrice, 
+				a_oProduct.metadata.isoCurrencyCode, a_oDataList);
 		}
 #endif			// #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 #endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
