@@ -18,7 +18,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public bool IsInit {
 		get {
 #if UNITY_IOS || UNITY_ANDROID
-			return !CAccess.IsMobilePlatform() ? false : FB.IsInitialized;
+			return !CAccess.IsMobile() ? false : FB.IsInitialized;
 #else
 			return false;
 #endif			// #if UNITY_IOS || UNITY_ANDROID
@@ -68,7 +68,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		CFunc.ShowLog("CFacebookManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
 		// 초기화가 필요 없을 경우
-		if(this.IsInit || !CAccess.IsMobilePlatform()) {
+		if(this.IsInit || !CAccess.IsMobile()) {
 			a_oCallback?.Invoke(this, this.IsInit);
 		} else {
 #if UNITY_IOS || UNITY_ANDROID
