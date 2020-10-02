@@ -115,7 +115,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	#region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
 	//! 초기화 되었을 경우
-	public void OnInit() {
+	private void OnInit() {
 		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_FACEBOOK_M_INIT_CALLBACK, () => {
 			CFunc.ShowLog("CFacebookManager.OnInit: {0}", KCDefine.B_LOG_COLOR_PLUGIN, this.IsInit);
 
@@ -135,7 +135,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 
 	//! 로그인 되었을 경우
-	public void OnLogin(ILoginResult a_oResult) {
+	private void OnLogin(ILoginResult a_oResult) {
 		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGIN_CALLBACK, () => {
 			CFunc.ShowLog("CFacebookManager.OnLogin: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, this.IsLogin, a_oResult);
 			CActivityIndicatorManager.Instance.StopActivityIndicator();
@@ -146,7 +146,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 
 	//! 뷰 상태가 변경 되었을 경우
-	public void OnChangeViewState(bool a_bIsShow) {
+	private void OnChangeViewState(bool a_bIsShow) {
 		string oKey = a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK
 			: KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
 
