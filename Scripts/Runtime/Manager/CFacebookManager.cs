@@ -67,17 +67,17 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public virtual void Init(System.Action<CFacebookManager, bool> a_oCallback) {
 		CFunc.ShowLog("CFacebookManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
-		// 초기화가 필요 없을 경우
-		if(this.IsInit || !CAccess.IsMobile()) {
-			a_oCallback?.Invoke(this, this.IsInit);
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+		// 초기화 되었을 경우
+		if(this.IsInit) {
+			a_oCallback?.Invoke(this, true);
 		} else {
-#if UNITY_IOS || UNITY_ANDROID
 			m_oInitCallback = a_oCallback;
 			FB.Init(this.OnInit, this.OnChangeViewState);
-#else
-			a_oCallback?.Invoke(this, this.IsInit);
-#endif			// #if UNITY_IOS || UNITY_ANDROID
 		}
+#else
+		a_oCallback?.Invoke(this, false);
+#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 	}
 	
 	//! 로그인을 처리한다
