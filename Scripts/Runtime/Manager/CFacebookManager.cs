@@ -17,27 +17,29 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	#region 프로퍼티
 	public bool IsInit {
 		get {
-#if UNITY_IOS || UNITY_ANDROID
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 			return !CAccess.IsMobile() ? false : FB.IsInitialized;
 #else
 			return false;
-#endif			// #if UNITY_IOS || UNITY_ANDROID
+#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 		}	
 	}
 
 	public bool IsLogin {
 		get {
-#if UNITY_IOS || UNITY_ANDROID
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 			// 초기화 되었을 경우
 			if(this.IsInit) {
 				var oToken = Facebook.Unity.AccessToken.CurrentAccessToken;
-				return oToken != null && oToken.ExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now).ExIsGreate(0.0f);
+
+				return oToken != null && 
+					oToken.ExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now).ExIsGreate(KCDefine.B_ZERO_VALUE_FLOAT);
 			}
 
 			return false;
 #else
 			return false;
-#endif			// #if UNITY_IOS || UNITY_ANDROID
+#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 		}
 	}
 
@@ -84,36 +86,36 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public void Login(List<string> a_oPermissionList, System.Action<CFacebookManager, bool> a_oCallback) {
 		CFunc.ShowLog("CFacebookManager.Login: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oPermissionList);
 
-		// 로그인이 필요 없을 경우
-		if(!this.IsInit || this.IsLogin) {
-			a_oCallback?.Invoke(this, this.IsLogin);
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+		// 로그인 되었을 경우
+		if(this.IsInit && this.IsLogin) {
+			a_oCallback?.Invoke(this, true);
 		} else {
-#if UNITY_IOS || UNITY_ANDROID
 			m_oLoginCallback = a_oCallback;
 			FB.LogInWithReadPermissions(a_oPermissionList, this.OnLogin);
-#else
-			a_oCallback?.Invoke(this, this.IsLogin);
-#endif			// #if UNITY_IOS || UNITY_ANDROID
 		}
+#else
+		a_oCallback?.Invoke(this, false);
+#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 	}
 
 	//! 로그아웃을 처리한다
 	public void Logout(System.Action<CFacebookManager> a_oLogoutCallback) {
 		CFunc.ShowLog("CFacebookManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
 
-#if UNITY_IOS || UNITY_ANDROID
-		// 초기화 되었을 경우
-		if(this.IsInit) {
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+		// 로그인 되었을 경우
+		if(this.IsInit && this.IsLogin) {
 			FB.LogOut();
 		}
-#endif			// #if UNITY_IOS || UNITY_ANDROID
+#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 
 		a_oLogoutCallback?.Invoke(this);
 	}
 	#endregion			// 함수
 
 	#region 조건부 함수
-#if UNITY_IOS || UNITY_ANDROID
+#if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 	//! 초기화 되었을 경우
 	private void OnInit() {
 		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_FACEBOOK_M_INIT_CALLBACK, () => {
@@ -164,7 +166,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			}
 		});
 	}
-#endif			// #if UNITY_IOS || UNITY_ANDROID
+#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 	#endregion			// 조건부 함수
 }
 #endif			// #if FACEBOOK_MODULE_ENABLE
