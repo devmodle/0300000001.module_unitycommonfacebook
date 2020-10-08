@@ -28,7 +28,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public void SendLog(string a_oName, Dictionary<string, object> a_oDataList, float? a_oValue = null) {
 		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oName, a_oDataList);
 
-#if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+#if UNITY_IOS || UNITY_ANDROID
 #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 		// 초기화 되었을 경우
 		if(this.IsInit) {
@@ -49,7 +49,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			FB.LogAppEvent(a_oName, a_oValue, oDataList);
 		}
 #endif			// #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
-#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+#endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 	#endregion			// 함수
 
@@ -59,7 +59,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public void SendPurchaseLog(Product a_oProduct, Dictionary<string, object> a_oDataList) {
 		CFunc.ShowLog("CFacebookManager.SendPurchaseLog: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oProduct);
 		
-#if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+#if UNITY_IOS || UNITY_ANDROID
 #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 		// 초기화 되었을 경우
 		if(this.IsInit) {
@@ -67,7 +67,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 				a_oProduct.metadata.isoCurrencyCode, a_oDataList);
 		}
 #endif			// #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
-#endif			// #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
+#endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 #endif			// #if PURCHASE_MODULE_ENABLE
 	#endregion			// 조건부 함수
