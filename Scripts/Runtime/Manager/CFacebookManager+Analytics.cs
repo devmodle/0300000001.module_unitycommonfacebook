@@ -35,14 +35,21 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			var oDataList = a_oDataList ?? new Dictionary<string, object>();
 
 #if MSG_PACK_ENABLE
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_DEVICE_ID, CCommonAppInfoStorage.Instance.AppInfo.DeviceID);
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_DEVICE_ID, 
+				CCommonAppInfoStorage.Instance.AppInfo.DeviceID);
 
 #if AUTO_LOG_PARAMS_ENABLE
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_PLATFORM, CCommonAppInfoStorage.Instance.PlatformName);
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_USER_TYPE, CCommonUserInfoStorage.Instance.UserInfo.UserType.ToString());
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_PLATFORM, 
+				CCommonAppInfoStorage.Instance.PlatformName);
+
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_USER_TYPE, 
+				CCommonUserInfoStorage.Instance.UserInfo.UserType.ToString());
 			
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_LOG_TIME, System.DateTime.UtcNow.ExToLongString());
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_INSTALL_TIME, CCommonAppInfoStorage.Instance.AppInfo.UTCInstallTime.ExToLongString());
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_LOG_TIME, 
+				System.DateTime.UtcNow.ExToLongString());
+
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_INSTALL_TIME, 
+				CCommonAppInfoStorage.Instance.AppInfo.UTCInstallTime.ExToLongString());
 #endif			// #if AUTO_LOG_PARAMS_ENABLE
 #endif			// #if MSG_PACK_ENABLE
 
