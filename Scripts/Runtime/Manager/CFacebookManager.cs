@@ -31,9 +31,10 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			// 초기화 되었을 경우
 			if(this.IsInit) {
 				var oToken = Facebook.Unity.AccessToken.CurrentAccessToken;
+				var stExpirationTime = (oToken != null) ? oToken.ExpirationTime : System.DateTime.Now;
 
-				return oToken != null && 
-					oToken.ExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now).ExIsGreate(KCDefine.B_ZERO_VALUE_FLOAT);
+				double dblDeltaTime = stExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now);
+				return dblDeltaTime.ExIsGreate(KCDefine.B_ZERO_VALUE_FLOAT);
 			}
 
 			return false;
@@ -88,8 +89,8 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 로그인 되었을 경우
-		if(this.IsInit && this.IsLogin) {
-			a_oCallback?.Invoke(this, true);
+		if(!this.IsInit || this.IsLogin) {
+			a_oCallback?.Invoke(this, this.IsLogin);
 		} else {
 			m_oLoginCallback = a_oCallback;
 			FB.LogInWithReadPermissions(a_oPermissionList, this.OnLogin);

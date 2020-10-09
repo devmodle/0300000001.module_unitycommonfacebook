@@ -18,15 +18,20 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 
 	//! 로그를 전송한다
-	public void SendLog(string a_oName, string a_oParam, List<string> a_oDataList, float? a_oValue = null) {
+	public void SendLog(string a_oName, 
+		string a_oParam, List<string> a_oDataList, float? a_oValue = null) 
+	{
 		this.SendLog(a_oName, new Dictionary<string, object>() {
 			[a_oParam] = a_oDataList.ExToString(KCDefine.B_TOKEN_CSV_STRING)
 		}, a_oValue);
 	}
 
 	//! 로그를 전송한다
-	public void SendLog(string a_oName, Dictionary<string, object> a_oDataList, float? a_oValue = null) {
-		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oName, a_oDataList);
+	public void SendLog(string a_oName, 
+		Dictionary<string, object> a_oDataList, float? a_oValue = null) 
+	{
+		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", 
+			KCDefine.B_LOG_COLOR_PLUGIN, a_oName, a_oDataList);
 
 #if UNITY_IOS || UNITY_ANDROID
 #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
