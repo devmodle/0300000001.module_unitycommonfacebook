@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 #if FACEBOOK_MODULE_ENABLE
-#if UNITY_IOS || UNITY_ANDROID
 using Facebook.Unity;
-#endif			// #if UNITY_IOS || UNITY_ANDROID
 
 //! 페이스 북 관리자
 public partial class CFacebookManager : CSingleton<CFacebookManager> {
