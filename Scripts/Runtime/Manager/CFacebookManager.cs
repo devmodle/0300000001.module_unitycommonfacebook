@@ -120,15 +120,15 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_FACEBOOK_M_INIT_CALLBACK, () => {
 			CFunc.ShowLog("CFacebookManager.OnInit: {0}", KCDefine.B_LOG_COLOR_PLUGIN, this.IsInit);
 
-#if FACEBOOK_ANALYTICS_ENABLE
-#if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
+#if FACEBOOK_ANALYTICS_ENABLE && (ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD))
 			FB.Mobile.SetAutoLogAppEventsEnabled(true);
+			FB.Mobile.SetAdvertiserTrackingEnabled(true);
 			FB.Mobile.SetAdvertiserIDCollectionEnabled(true);
 #else
 			FB.Mobile.SetAutoLogAppEventsEnabled(false);
+			FB.Mobile.SetAdvertiserTrackingEnabled(false);
 			FB.Mobile.SetAdvertiserIDCollectionEnabled(false);
-#endif			// #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
-#endif			// #if FACEBOOK_ANALYTICS_ENABLE
+#endif			// #if FACEBOOK_ANALYTICS_ENABLE && (ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD))
 
 			FB.ActivateApp();
 			m_oInitCallback?.Invoke(this, this.IsInit);
