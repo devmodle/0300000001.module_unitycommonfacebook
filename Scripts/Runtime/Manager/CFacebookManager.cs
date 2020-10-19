@@ -10,6 +10,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	#region 변수
 	private System.Action<CFacebookManager, bool> m_oInitCallback = null;
 	private System.Action<CFacebookManager, bool> m_oLoginCallback = null;
+	private System.Action<CFacebookManager, bool> m_oChangeViewStateCallback = null;
 	#endregion			// 변수
 
 	#region 프로퍼티
@@ -32,7 +33,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 				var stExpirationTime = (oToken != null) ? oToken.ExpirationTime : System.DateTime.Now;
 
 				double dblDeltaTime = stExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now);
-				return dblDeltaTime.ExIsGreate(KCDefine.B_MIN_VALUE_NORM);
+				return dblDeltaTime.ExIsGreate(KCDefine.B_VALUE_FLOAT_0);
 			}
 
 			return false;
@@ -82,7 +83,9 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 	
 	//! 로그인을 처리한다
-	public void Login(List<string> a_oPermissionList, System.Action<CFacebookManager, bool> a_oCallback) {
+	public void Login(List<string> a_oPermissionList, 
+		System.Action<CFacebookManager, bool> a_oCallback, System.Action<CFacebookManager, bool> a_oChangeViewStateCallback = null) 
+	{
 		CFunc.ShowLog("CFacebookManager.Login: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oPermissionList);
 
 #if UNITY_IOS || UNITY_ANDROID
@@ -91,6 +94,8 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			a_oCallback?.Invoke(this, this.IsLogin);
 		} else {
 			m_oLoginCallback = a_oCallback;
+			m_oChangeViewStateCallback = a_oChangeViewStateCallback;
+
 			FB.LogInWithReadPermissions(a_oPermissionList, this.OnLogin);
 		}
 #else
@@ -138,11 +143,10 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	//! 로그인 되었을 경우
 	private void OnLogin(ILoginResult a_oResult) {
 		CScheduleManager.Instance.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGIN_CALLBACK, () => {
-			CFunc.ShowLog("CFacebookManager.OnLogin: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, this.IsLogin, a_oResult);
-			CActivityIndicatorManager.Instance.StopActivityIndicator();
+			CFunc.ShowLog("CFacebookManager.OnLogin: {0}, {1}", 
+				KCDefine.B_LOG_COLOR_PLUGIN, this.IsLogin, a_oResult);
 
 			m_oLoginCallback?.Invoke(this, this.IsLogin);
-			m_oLoginCallback = null;
 		});
 	}
 
@@ -152,17 +156,10 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			: KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
 
 		CScheduleManager.Instance.AddCallback(oKey, () => {
-			CFunc.ShowLog("CFacebookManager.OnChangeViewState: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_bIsShow);
+			CFunc.ShowLog("CFacebookManager.OnChangeViewState: {0}", 
+				KCDefine.B_LOG_COLOR_PLUGIN, a_bIsShow);
 
-			// 출력 모드 일 경우
-			if(a_bIsShow) {
-				CActivityIndicatorManager.Instance.StopActivityIndicator();
-
-				m_oLoginCallback?.Invoke(this, this.IsLogin);
-				m_oLoginCallback = null;
-			} else {
-				CActivityIndicatorManager.Instance.StartActivityIndicator(true);
-			}
+			m_oChangeViewStateCallback?.Invoke(this, a_bIsShow);
 		});
 	}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
