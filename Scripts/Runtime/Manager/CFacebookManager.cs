@@ -152,8 +152,8 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 
 	//! 뷰 상태가 변경 되었을 경우
 	private void OnChangeViewState(bool a_bIsShow) {
-		string oKey = a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK
-			: KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
+		string oKey = a_bIsShow ? 
+			KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
 
 		CScheduleManager.Instance.AddCallback(oKey, () => {
 			CFunc.ShowLog("CFacebookManager.OnChangeViewState: {0}", 
