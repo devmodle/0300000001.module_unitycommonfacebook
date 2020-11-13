@@ -136,7 +136,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 #endif			// #if FACEBOOK_ANALYTICS_ENABLE && (ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD))
 
 			FB.ActivateApp();
-			m_oInitCallback?.Invoke(this, this.IsInit);
+			CFunc.Invoke(ref m_oInitCallback, this, this.IsInit);
 		});
 	}
 
@@ -146,7 +146,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			CFunc.ShowLog("CFacebookManager.OnLogin: {0}, {1}", 
 				KCDefine.B_LOG_COLOR_PLUGIN, this.IsLogin, a_oResult);
 
-			m_oLoginCallback?.Invoke(this, this.IsLogin);
+			CFunc.Invoke(ref m_oLoginCallback, this, this.IsLogin);
 		});
 	}
 
@@ -159,7 +159,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			CFunc.ShowLog("CFacebookManager.OnChangeViewState: {0}", 
 				KCDefine.B_LOG_COLOR_PLUGIN, a_bIsShow);
 
-			m_oChangeViewStateCallback?.Invoke(this, a_bIsShow);
+			CFunc.Invoke(ref m_oChangeViewStateCallback, this, a_bIsShow);
 		});
 	}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
