@@ -104,7 +104,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 
 	//! 로그아웃을 처리한다
-	public void Logout(System.Action<CFacebookManager> a_oLogoutCallback) {
+	public void Logout(System.Action<CFacebookManager> a_oCallback) {
 		CFunc.ShowLog("CFacebookManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
@@ -114,7 +114,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 
-		a_oLogoutCallback?.Invoke(this);
+		a_oCallback?.Invoke(this);
 	}
 	#endregion			// 함수
 
