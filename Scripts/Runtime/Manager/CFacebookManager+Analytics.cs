@@ -66,7 +66,9 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	#region 조건부 함수
 #if PURCHASE_MODULE_ENABLE
 	//! 결제 로그를 전송한다
-	public void SendPurchaseLog(Product a_oProduct, Dictionary<string, object> a_oDataList) {
+	public void SendPurchaseLog(UnityEngine.Purchasing.Product a_oProduct, 
+		Dictionary<string, object> a_oDataList) 
+	{
 		CFunc.ShowLog("CFacebookManager.SendPurchaseLog: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oProduct);
 		
 #if FACEBOOK_ANALYTICS_ENABLE && (UNITY_IOS || UNITY_ANDROID)
