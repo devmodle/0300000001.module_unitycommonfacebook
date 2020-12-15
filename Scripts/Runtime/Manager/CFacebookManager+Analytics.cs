@@ -11,25 +11,13 @@ using UnityEngine.Purchasing;
 
 //! 페이스 북 관리자 - 분석
 public partial class CFacebookManager : CSingleton<CFacebookManager> {
-		#region 함수
-	//! 로그를 전송한다
-	public void SendLog(string a_oName, float? a_oValue = null) {
-		this.SendLog(a_oName, null, a_oValue);
-	}
-
-	//! 로그를 전송한다
-	public void SendLog(string a_oName, 
-		string a_oParams, List<string> a_oDataList, float? a_oValue = null) 
-	{
-		this.SendLog(a_oName, new Dictionary<string, object>() {
-			[a_oParams] = a_oDataList.ExToString(KCDefine.B_TOKEN_CSV_STRING)
-		}, a_oValue);
-	}
-
+	#region 함수
 	//! 로그를 전송한다
 	public void SendLog(string a_oName, 
 		Dictionary<string, object> a_oDataList, float? a_oValue = null) 
 	{
+		CAccess.Assert(a_oName.ExIsValid());
+
 		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", 
 			KCDefine.B_LOG_COLOR_PLUGIN, a_oName, a_oDataList);
 
@@ -66,17 +54,18 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	#region 조건부 함수
 #if PURCHASE_MODULE_ENABLE
 	//! 결제 로그를 전송한다
-	public void SendPurchaseLog(UnityEngine.Purchasing.Product a_oProduct, 
-		Dictionary<string, object> a_oDataList) 
-	{
-		CFunc.ShowLog("CFacebookManager.SendPurchaseLog: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oProduct);
-		
+	public void SendPurchaseLog(UnityEngine.Purchasing.Product a_oProduct) {
+		CAccess.Assert(a_oProduct != null);
+
+		CFunc.ShowLog("CFacebookManager.SendPurchaseLog: {0}", 
+			KCDefine.B_LOG_COLOR_PLUGIN, a_oProduct);
+
 #if FACEBOOK_ANALYTICS_ENABLE && (UNITY_IOS || UNITY_ANDROID)
 #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 		// 초기화 되었을 경우
 		if(this.IsInit) {
 			FB.LogPurchase(a_oProduct.metadata.localizedPrice, 
-				a_oProduct.metadata.isoCurrencyCode, a_oDataList);
+				a_oProduct.metadata.isoCurrencyCode);
 		}
 #endif			// #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 #endif			// #if FACEBOOK_ANALYTICS_ENABLE && (UNITY_IOS || UNITY_ANDROID)

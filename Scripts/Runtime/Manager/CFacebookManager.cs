@@ -30,7 +30,9 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			// 초기화 되었을 경우
 			if(this.IsInit) {
 				var oToken = Facebook.Unity.AccessToken.CurrentAccessToken;
-				var stExpirationTime = (oToken != null) ? oToken.ExpirationTime : System.DateTime.Now;
+
+				var stExpirationTime = (oToken != null) ? oToken.ExpirationTime 
+					: System.DateTime.Now;
 
 				double dblDeltaTime = stExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now);
 				return dblDeltaTime.ExIsGreate(KCDefine.B_VALUE_FLOAT_0);
@@ -46,7 +48,8 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public string UserID {
 		get {
 #if UNITY_IOS || UNITY_ANDROID
-			return this.IsLogin ? Facebook.Unity.AccessToken.CurrentAccessToken.UserId : string.Empty;
+			return this.IsLogin ? Facebook.Unity.AccessToken.CurrentAccessToken.UserId 
+				: string.Empty;
 #else
 			return string.Empty;
 #endif			// #if UNITY_IOS || UNITY_ANDROID
@@ -56,7 +59,8 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public string AccessToken {
 		get {
 #if UNITY_IOS || UNITY_ANDROID
-			return this.IsLogin ? Facebook.Unity.AccessToken.CurrentAccessToken.TokenString : string.Empty;
+			return this.IsLogin ? Facebook.Unity.AccessToken.CurrentAccessToken.TokenString 
+				: string.Empty;
 #else
 			return string.Empty;
 #endif			// #if UNITY_IOS || UNITY_ANDROID
@@ -86,7 +90,10 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public void Login(List<string> a_oPermissionList, 
 		System.Action<CFacebookManager, bool> a_oCallback, System.Action<CFacebookManager, bool> a_oChangeViewStateCallback = null) 
 	{
-		CFunc.ShowLog("CFacebookManager.Login: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oPermissionList);
+		CAccess.Assert(a_oPermissionList.ExIsValid());
+		
+		CFunc.ShowLog("CFacebookManager.Login: {0}", 
+			KCDefine.B_LOG_COLOR_PLUGIN, a_oPermissionList);
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 로그인 되었을 경우
