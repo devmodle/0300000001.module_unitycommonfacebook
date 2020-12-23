@@ -35,7 +35,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 					: System.DateTime.Now;
 
 				double dblDeltaTime = stExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now);
-				return dblDeltaTime.ExIsGreate(KCDefine.B_VALUE_FLOAT_0);
+				return dblDeltaTime.ExIsGreate(KCDefine.B_VALUE_FLT_0);
 			}
 
 			return false;
