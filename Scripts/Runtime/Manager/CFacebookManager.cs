@@ -30,9 +30,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			// 초기화 되었을 경우
 			if(this.IsInit) {
 				var oToken = Facebook.Unity.AccessToken.CurrentAccessToken;
-
-				var stExpirationTime = (oToken != null) ? oToken.ExpirationTime 
-					: System.DateTime.Now;
+				var stExpirationTime = (oToken != null) ? oToken.ExpirationTime : System.DateTime.Now;
 
 				double dblDeltaTime = stExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now);
 				return dblDeltaTime.ExIsGreate(KCDefine.B_VALUE_FLT_0);
@@ -48,8 +46,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public string UserID {
 		get {
 #if UNITY_IOS || UNITY_ANDROID
-			return this.IsLogin ? Facebook.Unity.AccessToken.CurrentAccessToken.UserId 
-				: string.Empty;
+			return this.IsLogin ? Facebook.Unity.AccessToken.CurrentAccessToken.UserId : string.Empty;
 #else
 			return string.Empty;
 #endif			// #if UNITY_IOS || UNITY_ANDROID
@@ -59,8 +56,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public string AccessToken {
 		get {
 #if UNITY_IOS || UNITY_ANDROID
-			return this.IsLogin ? Facebook.Unity.AccessToken.CurrentAccessToken.TokenString 
-				: string.Empty;
+			return this.IsLogin ? Facebook.Unity.AccessToken.CurrentAccessToken.TokenString : string.Empty;
 #else
 			return string.Empty;
 #endif			// #if UNITY_IOS || UNITY_ANDROID
@@ -87,13 +83,9 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 	
 	//! 로그인을 처리한다
-	public void Login(List<string> a_oPermissionList, 
-		System.Action<CFacebookManager, bool> a_oCallback, System.Action<CFacebookManager, bool> a_oChangeViewStateCallback = null) 
-	{
-		CAccess.Assert(a_oPermissionList.ExIsValid());
-		
-		CFunc.ShowLog("CFacebookManager.Login: {0}", 
-			KCDefine.B_LOG_COLOR_PLUGIN, a_oPermissionList);
+	public void Login(List<string> a_oPermissionList, System.Action<CFacebookManager, bool> a_oCallback, System.Action<CFacebookManager, bool> a_oChangeViewStateCallback = null) {
+		CAccess.Assert(a_oPermissionList.ExIsValid());		
+		CFunc.ShowLog("CFacebookManager.Login: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oPermissionList);
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 로그인 되었을 경우
@@ -150,22 +142,17 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	//! 로그인 되었을 경우
 	private void OnLogin(ILoginResult a_oResult) {
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGIN_CALLBACK, () => {
-			CFunc.ShowLog("CFacebookManager.OnLogin: {0}, {1}", 
-				KCDefine.B_LOG_COLOR_PLUGIN, this.IsLogin, a_oResult);
-
+			CFunc.ShowLog("CFacebookManager.OnLogin: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, this.IsLogin, a_oResult);
 			CFunc.Invoke(ref m_oLoginCallback, this, this.IsLogin);
 		});
 	}
 
 	//! 뷰 상태가 변경 되었을 경우
 	private void OnChangeViewState(bool a_bIsShow) {
-		string oKey = a_bIsShow ? 
-			KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
+		string oKey = a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
 
 		CScheduleManager.Inst.AddCallback(oKey, () => {
-			CFunc.ShowLog("CFacebookManager.OnChangeViewState: {0}", 
-				KCDefine.B_LOG_COLOR_PLUGIN, a_bIsShow);
-
+			CFunc.ShowLog("CFacebookManager.OnChangeViewState: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_bIsShow);
 			CFunc.Invoke(ref m_oChangeViewStateCallback, this, a_bIsShow);
 		});
 	}

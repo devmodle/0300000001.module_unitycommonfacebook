@@ -13,13 +13,9 @@ using UnityEngine.Purchasing;
 public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	#region 함수
 	//! 로그를 전송한다
-	public void SendLog(string a_oName, 
-		Dictionary<string, object> a_oDataList, float? a_oValue = null) 
-	{
+	public void SendLog(string a_oName, Dictionary<string, object> a_oDataList, float? a_oValue = null) {
 		CAccess.Assert(a_oName.ExIsValid());
-
-		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", 
-			KCDefine.B_LOG_COLOR_PLUGIN, a_oName, a_oDataList);
+		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oName, a_oDataList);
 
 #if FACEBOOK_ANALYTICS_ENABLE && (UNITY_IOS || UNITY_ANDROID)
 #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
@@ -27,21 +23,13 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		if(this.IsInit) {
 			var oDataList = a_oDataList ?? new Dictionary<string, object>();
 
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_DEVICE_ID, 
-				CCommonAppInfoStorage.Inst.AppInfo.DeviceID);
-
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_PLATFORM, 
-				CCommonAppInfoStorage.Inst.Platform);
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_DEVICE_ID, CCommonAppInfoStorage.Inst.AppInfo.DeviceID);
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_PLATFORM, CCommonAppInfoStorage.Inst.Platform);
 
 #if AUTO_LOG_PARAMS_ENABLE
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_USER_TYPE, 
-				CCommonUserInfoStorage.Inst.UserInfo.UserType.ToString());
-			
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_LOG_TIME, 
-				System.DateTime.UtcNow.ExToLongString());
-
-			oDataList.ExAddValue(KCDefine.U_LOG_KEY_INSTALL_TIME, 
-				CCommonAppInfoStorage.Inst.AppInfo.UTCInstallTime.ExToLongString());
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_USER_TYPE, CCommonUserInfoStorage.Inst.UserInfo.UserType.ToString());
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_LOG_TIME, System.DateTime.UtcNow.ExToLongString());
+			oDataList.ExAddValue(KCDefine.U_LOG_KEY_INSTALL_TIME, CCommonAppInfoStorage.Inst.AppInfo.UTCInstallTime.ExToLongString());
 #endif			// #if AUTO_LOG_PARAMS_ENABLE
 
 			FB.LogAppEvent(a_oName, a_oValue, oDataList);
@@ -56,16 +44,13 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	//! 결제 로그를 전송한다
 	public void SendPurchaseLog(UnityEngine.Purchasing.Product a_oProduct) {
 		CAccess.Assert(a_oProduct != null);
-
-		CFunc.ShowLog("CFacebookManager.SendPurchaseLog: {0}", 
-			KCDefine.B_LOG_COLOR_PLUGIN, a_oProduct);
+		CFunc.ShowLog("CFacebookManager.SendPurchaseLog: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oProduct);
 
 #if FACEBOOK_ANALYTICS_ENABLE && (UNITY_IOS || UNITY_ANDROID)
 #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 		// 초기화 되었을 경우
 		if(this.IsInit) {
-			FB.LogPurchase(a_oProduct.metadata.localizedPrice, 
-				a_oProduct.metadata.isoCurrencyCode);
+			FB.LogPurchase(a_oProduct.metadata.localizedPrice, a_oProduct.metadata.isoCurrencyCode);
 		}
 #endif			// #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 #endif			// #if FACEBOOK_ANALYTICS_ENABLE && (UNITY_IOS || UNITY_ANDROID)
