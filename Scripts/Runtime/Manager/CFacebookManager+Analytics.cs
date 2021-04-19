@@ -13,7 +13,7 @@ using UnityEngine.Purchasing;
 public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	#region 함수
 	//! 로그를 전송한다
-	public void SendLog(string a_oName, Dictionary<string, object> a_oDataList, float? a_oValue = null) {
+	public void SendLog(string a_oName, Dictionary<string, object> a_oDataList, float? a_oVal = null) {
 		CAccess.Assert(a_oName.ExIsValid());
 		CFunc.ShowLog("CFacebookManager.SendLog: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, a_oName, a_oDataList);
 
@@ -23,16 +23,16 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		if(this.IsInit) {
 			var oDataList = a_oDataList ?? new Dictionary<string, object>();
 
-			oDataList.ExAddValue(KCDefine.L_LOG_KEY_DEVICE_ID, CCommonAppInfoStorage.Inst.AppInfo.DeviceID);
-			oDataList.ExAddValue(KCDefine.L_LOG_KEY_PLATFORM, CCommonAppInfoStorage.Inst.Platform);
+			oDataList.ExAddVal(KCDefine.L_LOG_KEY_DEVICE_ID, CCommonAppInfoStorage.Inst.AppInfo.DeviceID);
+			oDataList.ExAddVal(KCDefine.L_LOG_KEY_PLATFORM, CCommonAppInfoStorage.Inst.Platform);
 
 #if AUTO_LOG_PARAMS_ENABLE
-			oDataList.ExAddValue(KCDefine.L_LOG_KEY_USER_TYPE, CCommonUserInfoStorage.Inst.UserInfo.UserType.ToString());
-			oDataList.ExAddValue(KCDefine.L_LOG_KEY_LOG_TIME, System.DateTime.UtcNow.ExToLongStr());
-			oDataList.ExAddValue(KCDefine.L_LOG_KEY_INSTALL_TIME, CCommonAppInfoStorage.Inst.AppInfo.UTCInstallTime.ExToLongStr());
+			oDataList.ExAddVal(KCDefine.L_LOG_KEY_USER_TYPE, CCommonUserInfoStorage.Inst.UserInfo.UserType.ToString());
+			oDataList.ExAddVal(KCDefine.L_LOG_KEY_LOG_TIME, System.DateTime.UtcNow.ExToLongStr());
+			oDataList.ExAddVal(KCDefine.L_LOG_KEY_INSTALL_TIME, CCommonAppInfoStorage.Inst.AppInfo.UTCInstallTime.ExToLongStr());
 #endif			// #if AUTO_LOG_PARAMS_ENABLE
 
-			FB.LogAppEvent(a_oName, a_oValue, oDataList);
+			FB.LogAppEvent(a_oName, a_oVal, oDataList);
 		}
 #endif			// #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 #endif			// #if FACEBOOK_ANALYTICS_ENABLE && (UNITY_IOS || UNITY_ANDROID)
