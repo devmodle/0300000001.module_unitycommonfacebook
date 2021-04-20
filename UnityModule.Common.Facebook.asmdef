@@ -1,14 +1,16 @@
 {
     "name": "UnityModule.Common.Facebook",
+    "rootNamespace": "",
     "references": [
         "UnityModule.Common.Define",
-		"UnityModule.Common.Access",
-		"UnityModule.Common.Factory",
-		"UnityModule.Common.Extension",
-		"UnityModule.Common.Func",
-		"UnityModule.Common.Utility",
-		"UnityModule.Common.Externals",
-        "UnityEngine.Purchasing"
+        "UnityModule.Common.Access",
+        "UnityModule.Common.Factory",
+        "UnityModule.Common.Extension",
+        "UnityModule.Common.Func",
+        "UnityModule.Common.Utility",
+        "UnityModule.Common.Externals",
+        "UnityEngine.Purchasing",
+        "UnityEngine.Purchasing.Stores"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
