@@ -85,7 +85,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	//! 로그인을 처리한다
 	public void Login(List<string> a_oPermissionList, System.Action<CFacebookManager, bool> a_oCallback, System.Action<CFacebookManager, bool> a_oChangeViewStateCallback = null) {
 		CAccess.Assert(a_oPermissionList.ExIsValid());		
-		CFunc.ShowLog("CFacebookManager.Login: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_oPermissionList);
+		CFunc.ShowLog($"CFacebookManager.Login: {a_oPermissionList}", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 로그인 되었을 경우
@@ -122,7 +122,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	//! 초기화 되었을 경우
 	private void OnInit() {
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_INIT_CALLBACK, () => {
-			CFunc.ShowLog("CFacebookManager.OnInit: {0}", KCDefine.B_LOG_COLOR_PLUGIN, this.IsInit);
+			CFunc.ShowLog($"CFacebookManager.OnInit: {this.IsInit}", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if FACEBOOK_ANALYTICS_ENABLE && (ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD))
 			FB.Mobile.SetAutoLogAppEventsEnabled(true);
@@ -142,7 +142,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	//! 로그인 되었을 경우
 	private void OnLogin(ILoginResult a_oResult) {
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGIN_CALLBACK, () => {
-			CFunc.ShowLog("CFacebookManager.OnLogin: {0}, {1}", KCDefine.B_LOG_COLOR_PLUGIN, this.IsLogin, a_oResult);
+			CFunc.ShowLog($"CFacebookManager.OnLogin: {this.IsLogin}, {a_oResult}", KCDefine.B_LOG_COLOR_PLUGIN);
 			CFunc.Invoke(ref m_oLoginCallback, this, this.IsLogin);
 		});
 	}
@@ -152,7 +152,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		string oKey = a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
 
 		CScheduleManager.Inst.AddCallback(oKey, () => {
-			CFunc.ShowLog("CFacebookManager.OnChangeViewState: {0}", KCDefine.B_LOG_COLOR_PLUGIN, a_bIsShow);
+			CFunc.ShowLog($"CFacebookManager.OnChangeViewState: {a_bIsShow}", KCDefine.B_LOG_COLOR_PLUGIN);
 			CFunc.Invoke(ref m_oChangeViewStateCallback, this, a_bIsShow);
 		});
 	}
