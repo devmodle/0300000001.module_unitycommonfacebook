@@ -6,7 +6,7 @@ using UnityEngine;
 using Facebook.Unity;
 
 //! 페이스 북 관리자
-public partial class CFacebookManager : CSingleton<CFacebookManager> {
+public class CFacebookManager : CSingleton<CFacebookManager> {
 	#region 변수
 	private System.Action<CFacebookManager, bool> m_oInitCallback = null;
 	private System.Action<CFacebookManager, bool> m_oLoginCallback = null;
