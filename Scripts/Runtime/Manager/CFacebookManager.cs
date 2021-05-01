@@ -17,7 +17,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 	public bool IsInit {
 		get {
 #if UNITY_IOS || UNITY_ANDROID
-			return !CAccess.IsMobile ? false : FB.IsInitialized;
+			return FB.IsInitialized;
 #else
 			return false;
 #endif			// #if UNITY_IOS || UNITY_ANDROID
