@@ -119,7 +119,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 
 	#region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
-	//! 초기화 되었을 경우
+	// 초기화 되었을 경우
 	private void OnInit() {
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_INIT_CALLBACK, () => {
 			CFunc.ShowLog($"CFacebookManager.OnInit: {this.IsInit}", KCDefine.B_LOG_COLOR_PLUGIN);
