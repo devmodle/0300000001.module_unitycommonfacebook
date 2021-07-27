@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 #if FACEBOOK_MODULE_ENABLE
 using Facebook.Unity;
