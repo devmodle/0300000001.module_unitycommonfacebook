@@ -8,8 +8,14 @@ using Facebook.Unity;
 
 //! 페이스 북 관리자
 public class CFacebookManager : CSingleton<CFacebookManager> {
+	//! 콜백 매개 변수
+	public struct STCallbackParams {
+		public System.Action<CFacebookManager, bool> m_oInitCallback;
+	}
+
 	#region 변수
-	private System.Action<CFacebookManager, bool> m_oInitCallback = null;
+	private STCallbackParams m_stCallbackParams;
+
 	private System.Action<CFacebookManager, bool> m_oLoginCallback = null;
 	private System.Action<CFacebookManager, bool> m_oChangeViewStateCallback = null;
 	#endregion			// 변수
@@ -67,15 +73,15 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 
 	#region 함수
 	//! 초기화
-	public virtual void Init(System.Action<CFacebookManager, bool> a_oCallback) {
+	public virtual void Init(STCallbackParams a_stCallbackParams) {
 		CFunc.ShowLog("CFacebookManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
-			a_oCallback?.Invoke(this, true);
+			a_stCallbackParams.m_oInitCallback?.Invoke(this, true);
 		} else {
-			m_oInitCallback = a_oCallback;
+			m_stCallbackParams = a_stCallbackParams;
 			FB.Init(this.OnInit, this.OnChangeViewState);
 		}
 #else
@@ -136,7 +142,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 #endif			// #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 
 			FB.ActivateApp();
-			CFunc.Invoke(ref m_oInitCallback, this, this.IsInit);
+			CFunc.Invoke(ref m_stCallbackParams.m_oInitCallback, this, this.IsInit);
 		});
 	}
 
