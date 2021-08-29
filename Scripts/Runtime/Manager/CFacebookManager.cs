@@ -10,7 +10,7 @@ using Facebook.Unity;
 public class CFacebookManager : CSingleton<CFacebookManager> {
 	//! 콜백 매개 변수
 	public struct STCallbackParams {
-		public System.Action<CFacebookManager, bool> m_oInitCallback;
+		public System.Action<CFacebookManager, bool> m_oCallback;
 	}
 
 	#region 변수
@@ -79,13 +79,13 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
-			a_stCallbackParams.m_oInitCallback?.Invoke(this, true);
+			a_stCallbackParams.m_oCallback?.Invoke(this, true);
 		} else {
 			m_stCallbackParams = a_stCallbackParams;
 			FB.Init(this.OnInit, this.OnChangeViewState);
 		}
 #else
-		a_oCallback?.Invoke(this, false);
+		a_stCallbackParams.m_oCallback?.Invoke(this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 	
@@ -142,7 +142,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 #endif			// #if ANALYTICS_TEST_ENABLE || (ADHOC_BUILD || STORE_BUILD)
 
 			FB.ActivateApp();
-			CFunc.Invoke(ref m_stCallbackParams.m_oInitCallback, this, this.IsInit);
+			CFunc.Invoke(ref m_stCallbackParams.m_oCallback, this, this.IsInit);
 		});
 	}
 
