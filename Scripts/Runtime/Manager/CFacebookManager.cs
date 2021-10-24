@@ -6,9 +6,9 @@ using UnityEngine.UI;
 #if FACEBOOK_MODULE_ENABLE
 using Facebook.Unity;
 
-//! 페이스 북 관리자
+/** 페이스 북 관리자 */
 public class CFacebookManager : CSingleton<CFacebookManager> {
-	//! 콜백 매개 변수
+	/** 콜백 매개 변수 */
 	public struct STCallbackParams {
 		public System.Action<CFacebookManager, bool> m_oCallback;
 	}
@@ -72,7 +72,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 	#endregion			// 프로퍼티
 
 	#region 함수
-	//! 초기화
+	/** 초기화 */
 	public virtual void Init(STCallbackParams a_stCallbackParams) {
 		CFunc.ShowLog("CFacebookManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
@@ -89,7 +89,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 	
-	//! 로그인을 처리한다
+	/** 로그인을 처리한다 */
 	public void Login(List<string> a_oPermissionList, System.Action<CFacebookManager, bool> a_oCallback, System.Action<CFacebookManager, bool> a_oChangeViewStateCallback = null) {
 		CFunc.ShowLog($"CFacebookManager.Login: {a_oPermissionList}", KCDefine.B_LOG_COLOR_PLUGIN);
 		CAccess.Assert(a_oPermissionList.ExIsValid());		
@@ -109,7 +109,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
-	//! 로그아웃을 처리한다
+	/** 로그아웃을 처리한다 */
 	public void Logout(System.Action<CFacebookManager> a_oCallback) {
 		CFunc.ShowLog("CFacebookManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
 
@@ -146,7 +146,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 		});
 	}
 
-	//! 로그인 되었을 경우
+	/** 로그인 되었을 경우 */
 	private void OnLogin(ILoginResult a_oResult) {
 		CFunc.ShowLog($"CFacebookManager.OnLogin: {this.IsLogin}, {a_oResult}", KCDefine.B_LOG_COLOR_PLUGIN);
 
@@ -155,7 +155,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 		});
 	}
 
-	//! 뷰 상태가 변경 되었을 경우
+	/** 뷰 상태가 변경 되었을 경우 */
 	private void OnChangeViewState(bool a_bIsShow) {
 		CFunc.ShowLog($"CFacebookManager.OnChangeViewState: {a_bIsShow}", KCDefine.B_LOG_COLOR_PLUGIN);
 		string oKey = a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
