@@ -133,13 +133,13 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_INIT_CALLBACK, () => {
 			FB.Mobile.SetAutoLogAppEventsEnabled(false);
 
-#if ANALYTICS_TEST_ENABLE || STORE_BUILD
+#if ANALYTICS_TEST_ENABLE || STORE_DIST_BUILD
 			FB.Mobile.SetAdvertiserTrackingEnabled(true);
 			FB.Mobile.SetAdvertiserIDCollectionEnabled(true);
 #else
 			FB.Mobile.SetAdvertiserTrackingEnabled(false);
 			FB.Mobile.SetAdvertiserIDCollectionEnabled(false);
-#endif			// #if ANALYTICS_TEST_ENABLE || STORE_BUILD
+#endif			// #if ANALYTICS_TEST_ENABLE || STORE_DIST_BUILD
 
 			FB.ActivateApp();
 			CFunc.Invoke(ref m_stCallbackParams.m_oCallback, this, this.IsInit);
