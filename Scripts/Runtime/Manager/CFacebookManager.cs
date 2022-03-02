@@ -8,16 +8,29 @@ using Facebook.Unity;
 
 /** 페이스 북 관리자 */
 public class CFacebookManager : CSingleton<CFacebookManager> {
-	/** 콜백 매개 변수 */
-	public struct STCallbackParams {
-		public System.Action<CFacebookManager, bool> m_oCallback;
+	/** 콜백 */
+	public enum ECallback {
+		NONE = -1,
+		INIT,
+		[HideInInspector] MAX_VAL
+	}
+
+	/** 페이스 북 콜백 */
+	private enum EFacebookCallback {
+		NONE = -1,
+		LOGIN,
+		CHANGE_VIEW_STATE,
+		[HideInInspector] MAX_VAL
+	}
+
+	/** 매개 변수 */
+	public struct STParams {
+		public Dictionary<ECallback, System.Action<CFacebookManager, bool>> m_oCallbackDict;
 	}
 
 	#region 변수
-	private STCallbackParams m_stCallbackParams;
-
-	private System.Action<CFacebookManager, bool> m_oLoginCallback = null;
-	private System.Action<CFacebookManager, bool> m_oChangeViewStateCallback = null;
+	private STParams m_stParams;
+	private Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>> m_oCallbackDict = new Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>>();
 	#endregion			// 변수
 
 	#region 프로퍼티
@@ -73,19 +86,19 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 
 	#region 함수
 	/** 초기화 */
-	public virtual void Init(STCallbackParams a_stCallbackParams) {
+	public virtual void Init(STParams a_stParams) {
 		CFunc.ShowLog("CFacebookManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
 		if(this.IsInit) {
-			a_stCallbackParams.m_oCallback?.Invoke(this, true);
+			a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, true);
 		} else {
-			m_stCallbackParams = a_stCallbackParams;
+			m_stParams = a_stParams;
 			FB.Init(this.OnInit, this.OnChangeViewState);
 		}
 #else
-		a_stCallbackParams.m_oCallback?.Invoke(this, false);
+		a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 	
@@ -97,15 +110,15 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 #if UNITY_IOS || UNITY_ANDROID
 		// 로그인 되었을 경우
 		if(!this.IsInit || this.IsLogin) {
-			a_oCallback?.Invoke(this, this.IsLogin);
+			CFunc.Invoke(ref a_oCallback, this, this.IsLogin);
 		} else {
-			m_oLoginCallback = a_oCallback;
-			m_oChangeViewStateCallback = a_oChangeViewStateCallback;
+			m_oCallbackDict.ExReplaceVal(EFacebookCallback.LOGIN, a_oCallback);
+			m_oCallbackDict.ExReplaceVal(EFacebookCallback.CHANGE_VIEW_STATE, a_oChangeViewStateCallback);
 
 			FB.LogInWithReadPermissions(a_oPermissionList, this.OnLogin);
 		}
 #else
-		a_oCallback?.Invoke(this, false);
+		CFunc.Invoke(ref a_oCallback, this, false);
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	}
 
@@ -120,7 +133,7 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 		}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 
-		a_oCallback?.Invoke(this);
+		CFunc.Invoke(ref a_oCallback, this);
 	}
 	#endregion			// 함수
 
@@ -142,22 +155,20 @@ public class CFacebookManager : CSingleton<CFacebookManager> {
 #endif			// #if ANALYTICS_TEST_ENABLE || STORE_DIST_BUILD
 
 			FB.ActivateApp();
-			CFunc.Invoke(ref m_stCallbackParams.m_oCallback, this, this.IsInit);
+			m_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
 		});
 	}
 
 	/** 로그인 되었을 경우 */
 	private void OnLogin(ILoginResult a_oResult) {
 		CFunc.ShowLog($"CFacebookManager.OnLogin: {this.IsLogin}, {a_oResult}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGIN_CALLBACK, () => CFunc.Invoke(ref m_oLoginCallback, this, this.IsLogin));
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGIN_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EFacebookCallback.LOGIN)?.Invoke(this, this.IsLogin));
 	}
 
 	/** 뷰 상태가 변경 되었을 경우 */
 	private void OnChangeViewState(bool a_bIsShow) {
 		CFunc.ShowLog($"CFacebookManager.OnChangeViewState: {a_bIsShow}", KCDefine.B_LOG_COLOR_PLUGIN);
-		string oKey = a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK;
-
-		CScheduleManager.Inst.AddCallback(oKey, () => CFunc.Invoke(ref m_oChangeViewStateCallback, this, a_bIsShow));
+		CScheduleManager.Inst.AddCallback(a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EFacebookCallback.CHANGE_VIEW_STATE)?.Invoke(this, a_bIsShow));
 	}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	#endregion			// 조건부 함수
