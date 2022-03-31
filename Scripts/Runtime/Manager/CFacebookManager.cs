@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using Facebook.Unity;
 
 /** 페이스 북 관리자 */
-public class CFacebookManager : CSingleton<CFacebookManager> {
+public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	/** 콜백 */
 	public enum ECallback {
 		NONE = -1,
