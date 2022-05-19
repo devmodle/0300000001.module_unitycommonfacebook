@@ -132,7 +132,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 
-		CFunc.Invoke(ref a_oCallback, this);
+		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGOUT_CALLBACK, () => CFunc.Invoke(ref a_oCallback, this));
 	}
 	#endregion			// 함수
 
