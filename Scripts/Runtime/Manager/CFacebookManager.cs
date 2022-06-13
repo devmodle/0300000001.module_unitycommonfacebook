@@ -24,7 +24,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 
 	/** 매개 변수 */
-	public struct STParams {
+	public partial struct STParams {
 		public Dictionary<ECallback, System.Action<CFacebookManager, bool>> m_oCallbackDict;
 	}
 
