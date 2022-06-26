@@ -34,14 +34,16 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public void Logout(System.Action<CFacebookManager> a_oCallback) {
 		CFunc.ShowLog("CFacebookManager.Logout", KCDefine.B_LOG_COLOR_PLUGIN);
 
+		try {
 #if UNITY_IOS || UNITY_ANDROID
-		// 로그인 되었을 경우
-		if(this.IsInit && this.IsLogin) {
-			FB.LogOut();
-		}
+			// 로그인 되었을 경우
+			if(this.IsInit && this.IsLogin) {
+				FB.LogOut();
+			}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
-
-		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGOUT_CALLBACK, () => CFunc.Invoke(ref a_oCallback, this));
+		} finally {
+			CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGOUT_CALLBACK, () => CFunc.Invoke(ref a_oCallback, this));
+		}
 	}
 	#endregion			// 함수
 
