@@ -30,11 +30,12 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 
 	#region 변수
-	private STParams m_stParams;
 	private Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>> m_oCallbackDict = new Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>>();
 	#endregion			// 변수
 
 	#region 프로퍼티
+	public STParams Params { get; private set; }
+
 	public bool IsInit {
 		get {
 #if UNITY_IOS || UNITY_ANDROID
@@ -94,7 +95,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		if(this.IsInit) {
 			a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
 		} else {
-			m_stParams = a_stParams;
+			this.Params = a_stParams;
 			FB.Init(this.OnInit, this.OnChangeViewState);
 		}
 #else
@@ -121,7 +122,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 #endif			// #if ANALYTICS_TEST_ENABLE || STORE_DIST_BUILD
 
 			FB.ActivateApp();
-			m_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
+			this.Params.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
 		});
 	}
 	
