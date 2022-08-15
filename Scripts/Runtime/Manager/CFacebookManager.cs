@@ -29,10 +29,6 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		public Dictionary<ECallback, System.Action<CFacebookManager, bool>> m_oCallbackDict;
 	}
 
-	#region 변수
-	private Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>> m_oCallbackDict = new Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>>();
-	#endregion			// 변수
-
 	#region 프로퍼티
 	public STParams Params { get; private set; }
 
@@ -83,6 +79,9 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 		}
 	}
+
+	/** =====> 기타 <===== */
+	private Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>> CallbackDict { get; } = new Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>>();
 	#endregion			// 프로퍼티
 
 	#region 함수
@@ -129,7 +128,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	/** 뷰 상태가 변경 되었을 경우 */
 	private void OnChangeViewState(bool a_bIsShow) {
 		CFunc.ShowLog($"CFacebookManager.OnChangeViewState: {a_bIsShow}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CScheduleManager.Inst.AddCallback(a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK, () => m_oCallbackDict.GetValueOrDefault(EFacebookCallback.CHANGE_VIEW_STATE)?.Invoke(this, a_bIsShow));
+		CScheduleManager.Inst.AddCallback(a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK, () => this.CallbackDict.GetValueOrDefault(EFacebookCallback.CHANGE_VIEW_STATE)?.Invoke(this, a_bIsShow));
 	}
 #endif			// #if UNITY_IOS || UNITY_ANDROID
 	#endregion			// 조건부 함수
