@@ -38,7 +38,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			return FB.IsInitialized;
 #else
 			return false;
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
+#endif // #if UNITY_IOS || UNITY_ANDROID
 		}	
 	}
 
@@ -56,7 +56,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			return false;
 #else
 			return false;
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
+#endif // #if UNITY_IOS || UNITY_ANDROID
 		}
 	}
 
@@ -66,7 +66,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			return this.IsLogin ? Facebook.Unity.AccessToken.CurrentAccessToken.UserId : string.Empty;
 #else
 			return string.Empty;
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
+#endif // #if UNITY_IOS || UNITY_ANDROID
 		}
 	}
 
@@ -76,13 +76,13 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			return this.IsLogin ? Facebook.Unity.AccessToken.CurrentAccessToken.TokenString : string.Empty;
 #else
 			return string.Empty;
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
+#endif // #if UNITY_IOS || UNITY_ANDROID
 		}
 	}
 
 	/** =====> 기타 <===== */
 	private Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>> CallbackDict { get; } = new Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>>();
-#endregion // 프로퍼티                 
+#endregion // 프로퍼티
 
 #region 함수
 	/** 초기화 */
@@ -101,7 +101,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, false);
 #endif // #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)                                                              
 	}
-#endregion // 함수               
+#endregion // 함수
 
 #region 클래스 함수
 	/** 매개 변수를 생성한다 */
@@ -110,7 +110,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			m_oCallbackDict = a_oCallbackDict ?? new Dictionary<ECallback, System.Action<CFacebookManager, bool>>()
 		};
 	}
-#endregion // 클래스 함수                   
+#endregion // 클래스 함수
 
 #region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
@@ -127,7 +127,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 #else
 			FB.Mobile.SetAdvertiserTrackingEnabled(false);
 			FB.Mobile.SetAdvertiserIDCollectionEnabled(false);
-#endif // #if ANALYTICS_TEST_ENABLE || STORE_DIST_BUILD                                                          
+#endif // #if ANALYTICS_TEST_ENABLE || STORE_DIST_BUILD
 
 			FB.ActivateApp();
 			this.Params.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
@@ -139,7 +139,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		CFunc.ShowLog($"CFacebookManager.OnChangeViewState: {a_bIsShow}", KCDefine.B_LOG_COLOR_PLUGIN);
 		CScheduleManager.Inst.AddCallback(a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK, () => this.CallbackDict.GetValueOrDefault(EFacebookCallback.CHANGE_VIEW_STATE)?.Invoke(this, a_bIsShow));
 	}
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
-#endregion // 조건부 함수                   
+#endif // #if UNITY_IOS || UNITY_ANDROID
+#endregion // 조건부 함수
 }
-#endif // #if FACEBOOK_MODULE_ENABLE                                       
+#endif // #if FACEBOOK_MODULE_ENABLE

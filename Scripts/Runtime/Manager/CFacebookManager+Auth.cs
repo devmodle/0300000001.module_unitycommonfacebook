@@ -27,7 +27,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		}
 #else
 		CFunc.Invoke(ref a_oCallback, this, false);
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
+#endif // #if UNITY_IOS || UNITY_ANDROID
 	}
 
 	/** 로그아웃을 처리한다 */
@@ -40,12 +40,12 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 			if(this.IsInit && this.IsLogin) {
 				FB.LogOut();
 			}
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
+#endif // #if UNITY_IOS || UNITY_ANDROID
 		} finally {
 			CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGOUT_CALLBACK, () => CFunc.Invoke(ref a_oCallback, this));
 		}
 	}
-#endregion // 함수               
+#endregion // 함수
 
 #region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
@@ -54,7 +54,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		CFunc.ShowLog($"CFacebookManager.OnLogin: {this.IsLogin}, {a_oResult}", KCDefine.B_LOG_COLOR_PLUGIN);
 		CScheduleManager.Inst.AddCallback(KCDefine.U_KEY_FACEBOOK_M_LOGIN_CALLBACK, () => this.CallbackDict.GetValueOrDefault(EFacebookCallback.LOGIN)?.Invoke(this, this.IsLogin));
 	}
-#endif // #if UNITY_IOS || UNITY_ANDROID                                           
-#endregion // 조건부 함수                   
+#endif // #if UNITY_IOS || UNITY_ANDROID
+#endregion // 조건부 함수
 }
-#endif // #if FACEBOOK_MODULE_ENABLE                                       
+#endif // #if FACEBOOK_MODULE_ENABLE
