@@ -13,7 +13,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	/** 로그인을 처리한다 */
 	public void Login(List<string> a_oPermissionList, System.Action<CFacebookManager, bool> a_oCallback, System.Action<CFacebookManager, bool> a_oChangeViewStateCallback = null) {
 		CFunc.ShowLog($"CFacebookManager.Login: {a_oPermissionList}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CAccess.Assert(a_oPermissionList.ExIsValid());		
+		CAccess.Assert(a_oPermissionList.ExIsValid());
 
 #if UNITY_IOS || UNITY_ANDROID
 		// 초기화 되었을 경우
