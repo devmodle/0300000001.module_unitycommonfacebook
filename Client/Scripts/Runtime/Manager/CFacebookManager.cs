@@ -80,7 +80,6 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		}
 	}
 
-	/** =====> 기타 <===== */
 	private Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>> CallbackDict { get; } = new Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>>();
 	#endregion // 프로퍼티
 
