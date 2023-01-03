@@ -29,7 +29,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		public Dictionary<ECallback, System.Action<CFacebookManager, bool>> m_oCallbackDict;
 	}
 
-	#region 프로퍼티
+#region 프로퍼티
 	public STParams Params { get; private set; }
 
 	public bool IsInit {
@@ -81,9 +81,9 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 
 	private Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>> CallbackDict { get; } = new Dictionary<EFacebookCallback, System.Action<CFacebookManager, bool>>();
-	#endregion // 프로퍼티
+#endregion // 프로퍼티
 
-	#region 함수
+#region 함수
 	/** 초기화 */
 	public virtual void Init(STParams a_stParams) {
 		CFunc.ShowLog("CFacebookManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
@@ -100,18 +100,18 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, false);
 #endif // #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 	}
-	#endregion // 함수
+#endregion // 함수
 
-	#region 클래스 함수
+#region 클래스 함수
 	/** 매개 변수를 생성한다 */
 	public static STParams MakeParams(Dictionary<ECallback, System.Action<CFacebookManager, bool>> a_oCallbackDict = null) {
 		return new STParams() {
 			m_oCallbackDict = a_oCallbackDict ?? new Dictionary<ECallback, System.Action<CFacebookManager, bool>>()
 		};
 	}
-	#endregion // 클래스 함수
+#endregion // 클래스 함수
 
-	#region 조건부 함수
+#region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
 	// 초기화 되었을 경우
 	private void OnInit() {
@@ -139,6 +139,6 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		CScheduleManager.Inst.AddCallback(a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK, () => this.CallbackDict.GetValueOrDefault(EFacebookCallback.CHANGE_VIEW_STATE)?.Invoke(this, a_bIsShow));
 	}
 #endif // #if UNITY_IOS || UNITY_ANDROID
-	#endregion // 조건부 함수
+#endregion // 조건부 함수
 }
 #endif // #if FACEBOOK_MODULE_ENABLE
