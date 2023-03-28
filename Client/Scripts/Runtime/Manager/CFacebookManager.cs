@@ -102,15 +102,6 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 #endregion // 함수
 
-#region 클래스 함수
-	/** 매개 변수를 생성한다 */
-	public static STParams MakeParams(Dictionary<ECallback, System.Action<CFacebookManager, bool>> a_oCallbackDict = null) {
-		return new STParams() {
-			m_oCallbackDict = a_oCallbackDict ?? new Dictionary<ECallback, System.Action<CFacebookManager, bool>>()
-		};
-	}
-#endregion // 클래스 함수
-
 #region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
 	// 초기화 되었을 경우
@@ -140,5 +131,17 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	}
 #endif // #if UNITY_IOS || UNITY_ANDROID
 #endregion // 조건부 함수
+}
+
+/** 페이스 북 관리자 - 팩토리 */
+public partial class CFacebookManager : CSingleton<CFacebookManager> {
+#region 클래스 함수
+	/** 매개 변수를 생성한다 */
+	public static STParams MakeParams(Dictionary<ECallback, System.Action<CFacebookManager, bool>> a_oCallbackDict = null) {
+		return new STParams() {
+			m_oCallbackDict = a_oCallbackDict ?? new Dictionary<ECallback, System.Action<CFacebookManager, bool>>()
+		};
+	}
+#endregion // 클래스 함수
 }
 #endif // #if FACEBOOK_MODULE_ENABLE
