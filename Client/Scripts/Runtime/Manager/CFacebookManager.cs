@@ -50,7 +50,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 				var oToken = Facebook.Unity.AccessToken.CurrentAccessToken;
 				var stExpirationTime = (oToken != null) ? oToken.ExpirationTime : System.DateTime.Now;
 				
-				return stExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now).ExIsGreate(KCDefine.B_VAL_0_REAL);
+				return stExpirationTime.ExGetDeltaTimePerDays(System.DateTime.Now).ExIsGreat(KCDefine.B_VAL_0_REAL);
 			}
 
 			return false;
