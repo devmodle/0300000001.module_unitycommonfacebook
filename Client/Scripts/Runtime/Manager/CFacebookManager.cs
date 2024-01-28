@@ -45,7 +45,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 	public bool IsLogin {
 		get {
 #if UNITY_IOS || UNITY_ANDROID
-			// 초기화 되었을 경우
+			// 초기화되었을 경우
 			if(this.IsInit) {
 				var oToken = Facebook.Unity.AccessToken.CurrentAccessToken;
 				var stExpirationTime = (oToken != null) ? oToken.ExpirationTime : System.DateTime.Now;
@@ -89,7 +89,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		CFunc.ShowLog("CFacebookManager.Init", KCDefine.B_LOG_COLOR_PLUGIN);
 
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
-		// 초기화 되었을 경우
+		// 초기화되었을 경우
 		if(this.IsInit) {
 			a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
 		} else {
@@ -104,7 +104,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 
 #region 조건부 함수
 #if UNITY_IOS || UNITY_ANDROID
-	// 초기화 되었을 경우
+	// 초기화되었을 경우
 	private void OnInit() {
 		CFunc.ShowLog($"CFacebookManager.OnInit: {this.IsInit}", KCDefine.B_LOG_COLOR_PLUGIN);
 
@@ -124,7 +124,7 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 		});
 	}
 	
-	/** 뷰 상태가 변경 되었을 경우 */
+	/** 뷰 상태가 변경되었을 경우 */
 	private void OnChangeViewState(bool a_bIsShow) {
 		CFunc.ShowLog($"CFacebookManager.OnChangeViewState: {a_bIsShow}", KCDefine.B_LOG_COLOR_PLUGIN);
 		CScheduleManager.Inst.AddCallback(a_bIsShow ? KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.U_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK, () => this.CallbackDict.GetValueOrDefault(EFacebookCallback.CHANGE_VIEW_STATE)?.Invoke(this, a_bIsShow));
