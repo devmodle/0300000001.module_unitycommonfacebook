@@ -91,13 +91,13 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 		// 초기화되었을 경우
 		if(this.IsInit) {
-			a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
+			a_stParams.m_oCallbackDict?.ExGetVal(ECallback.INIT)?.Invoke(this, this.IsInit);
 		} else {
 			this.Params = a_stParams;
 			FB.Init(this.OnInit, this.OnChangeViewState);
 		}
 #else
-		a_stParams.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, false);
+		a_stParams.m_oCallbackDict?.ExGetVal(ECallback.INIT)?.Invoke(this, false);
 #endif // #if !UNITY_EDITOR && (UNITY_IOS || UNITY_ANDROID)
 	}
 #endregion // 함수
@@ -120,14 +120,14 @@ public partial class CFacebookManager : CSingleton<CFacebookManager> {
 #endif // #if ANALYTICS_TEST_ENABLE || STORE_DIST_BUILD
 
 			FB.ActivateApp();
-			this.Params.m_oCallbackDict?.GetValueOrDefault(ECallback.INIT)?.Invoke(this, this.IsInit);
+			this.Params.m_oCallbackDict?.ExGetVal(ECallback.INIT)?.Invoke(this, this.IsInit);
 		});
 	}
 	
 	/** 뷰 상태가 변경되었을 경우 */
 	private void OnChangeViewState(bool a_bIsShow) {
 		CFunc.ShowLog($"CFacebookManager.OnChangeViewState: {a_bIsShow}", KCDefine.B_LOG_COLOR_PLUGIN);
-		CScheduleManager.Inst.AddCallback(a_bIsShow ? KCDefine.B_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.B_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK, () => this.CallbackDict.GetValueOrDefault(EFacebookCallback.CHANGE_VIEW_STATE)?.Invoke(this, a_bIsShow));
+		CScheduleManager.Inst.AddCallback(a_bIsShow ? KCDefine.B_KEY_FACEBOOK_M_VIEW_STATE_SHOW_CALLBACK : KCDefine.B_KEY_FACEBOOK_M_VIEW_STATE_CLOSE_CALLBACK, () => this.CallbackDict.ExGetVal(EFacebookCallback.CHANGE_VIEW_STATE)?.Invoke(this, a_bIsShow));
 	}
 #endif // #if UNITY_IOS || UNITY_ANDROID
 #endregion // 조건부 함수
